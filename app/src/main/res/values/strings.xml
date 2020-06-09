@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Minecraft Skill - Android</string>
+    <string name="microphone_button">microphone button</string>
+    <string name="listen_text">Listening...</string>
+    <string name="thinking_text">Thinking...</string>
+</resources>

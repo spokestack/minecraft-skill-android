@@ -1,0 +1,63 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'android-native-dependencies'
+native_dependencies {
+    artifact 'io.spokestack:spokestack-android:5.4.0'
+}
+
+
+android {
+    ndkVersion "21.0.6113669"
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    viewBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId "io.spokestack.minecraft_android"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation 'commons-codec:commons-codec:1.14'
+
+    // base Spokestack dependency
+    implementation 'io.spokestack:spokestack-android:5.4.0'
+
+    // for TTS playback
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
+    implementation 'androidx.media:media:1.1.0'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.11.0'
+
+    // wakeword and NLU
+    implementation 'org.tensorflow:tensorflow-lite:1.14.0'
+}
