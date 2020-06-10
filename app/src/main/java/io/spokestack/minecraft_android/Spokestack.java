@@ -1,6 +1,7 @@
 package io.spokestack.minecraft_android;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.util.Log;
 import androidx.lifecycle.Lifecycle;
 import io.spokestack.minecraft_android.handler.Cookbook;
@@ -23,6 +24,10 @@ import io.spokestack.spokestack.tts.TTSListener;
 import io.spokestack.spokestack.tts.TTSManager;
 import io.spokestack.spokestack.util.EventTracer;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
@@ -86,13 +91,31 @@ public class Spokestack implements OnSpeechEventListener, TTSListener, TraceList
         }
     }
 
-    private void buildPipeline() {
+    private void buildPipeline() throws Exception {
+        String credentials = getCredentials();
         this.speechPipeline = new SpeechPipeline.Builder()
-              .useProfile("io.spokestack.spokestack.profile.PushToTalkAndroidASR")
+              .useProfile("io.spokestack.spokestack.profile.PushToTalkGoogleASR")
+              .setProperty("google-credentials", credentials)
+              .setProperty("locale", "en-US")
               .setProperty("trace-level", EventTracer.Level.DEBUG.value())
               .setAndroidContext(this.appContext)
               .addOnSpeechEventListener(this)
               .build();
+    }
+
+    private String getCredentials() throws IOException {
+        StringBuilder response = new StringBuilder();
+        AssetManager manager = this.appContext.getAssets();
+        try (InputStream inStream = manager.open("google-credentials.json");
+             InputStreamReader inputReader = new InputStreamReader(inStream);
+             BufferedReader reader = new BufferedReader(inputReader)) {
+            String line = reader.readLine();
+            while (line != null) {
+                response.append(line);
+                line = reader.readLine();
+            }
+        }
+        return response.toString();
     }
 
     private void buildNLU() {
@@ -156,6 +179,7 @@ public class Spokestack implements OnSpeechEventListener, TTSListener, TraceList
                 break;
             case TIMEOUT:
                 Log.i(logTag, "ASR timeout");
+                this.uiDelegate.transcriptAvailable("");
                 break;
             case ERROR:
                 Log.e(logTag, "ASR error", context.getError());

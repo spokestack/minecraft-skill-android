@@ -37,6 +37,12 @@ android {
         }
     }
 
+    // necessary for packaging certain combinations of dependencies (in this
+    // case, the Google Speech dependency forces us into this)
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/INDEX.LIST'
+    }
 }
 
 dependencies {
@@ -52,6 +58,10 @@ dependencies {
 
     // base Spokestack dependency
     implementation 'io.spokestack:spokestack-android:5.5.0'
+
+    // Google Cloud Speech ASR
+    implementation 'com.google.cloud:google-cloud-speech:1.22.2'
+    implementation 'io.grpc:grpc-okhttp:1.28.1'
 
     // for TTS playback
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
