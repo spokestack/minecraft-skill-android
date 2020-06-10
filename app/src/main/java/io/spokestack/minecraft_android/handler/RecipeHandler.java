@@ -57,8 +57,8 @@ public class RecipeHandler implements RequestHandler {
             return new Response(prompt);
         }
 
-        // Success! Give the user their recipe.
-        return new Response(recipe);
+        // Success! Give the user their recipe and close the mic.
+        return new Response(recipe, false);
     }
 
     private String getRecipe(Cookbook cookbook, String recipeName) {

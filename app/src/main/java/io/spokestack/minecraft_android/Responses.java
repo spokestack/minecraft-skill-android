@@ -13,7 +13,7 @@ public enum Responses {
           "You can ask questions such as, what's the recipe for a %s, or, you can say exit. Now, what can I help you with?"),
     STOP_MESSAGE("Goodbye!"),
     RECIPE_NOT_FOUND_WITH_ITEM_NAME(
-          "I'm sorry, I currently do not know the recipe for %s. "),
+          "I'm sorry, I currently do not know the recipe for %s."),
     RECIPE_NOT_FOUND_WITHOUT_ITEM_NAME(
           "I'm sorry, I currently do not know that recipe.");
 

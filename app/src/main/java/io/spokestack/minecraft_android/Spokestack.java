@@ -217,8 +217,15 @@ public class Spokestack implements OnSpeechEventListener, TTSListener, TraceList
         switch (event.type) {
             // it might take a second or two to get the audio player set up and
             // playing, so delay displaying the prompt until we have audio
-            case AUDIO_AVAILABLE:
+            case PLAYBACK_COMPLETE:
                 Response response =
+                      this.dialogManager.getSession().getLastResponse();
+                if (response.isMicOpen()) {
+                    activateAsr();
+                }
+                break;
+            case AUDIO_AVAILABLE:
+                response =
                       this.dialogManager.getSession().getLastResponse();
                 this.uiDelegate.promptAvailable(response.getPrompt());
                 break;
