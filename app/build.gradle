@@ -51,7 +51,7 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.14'
 
     // base Spokestack dependency
-    implementation 'io.spokestack:spokestack-android:11.0.1'
+    implementation 'io.spokestack:spokestack-android:11.0.2'
 
     // for TTS playback
     implementation 'androidx.media:media:1.2.0'
