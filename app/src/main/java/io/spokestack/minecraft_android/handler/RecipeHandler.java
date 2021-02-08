@@ -38,7 +38,7 @@ public class RecipeHandler implements RequestHandler {
         Slot itemSlot = handlerInput.getSlots().get("Item");
         // If we don't have a value for the Item slot, we can't repeat the
         // search term in our response, so bail now.
-        if (itemSlot == null) {
+        if (itemSlot == null || itemSlot.getRawValue() == null) {
             return new Response(prompt);
         }
 

@@ -81,8 +81,7 @@ public class MainActivity extends AppCompatActivity implements VoiceUI {
     private void buildSpokestack() {
         // extract the models from the asset bundle if we need to
         checkForModels();
-        this.spokestack = new Spokestack(getApplicationContext(),
-              getLifecycle(), this);
+        this.spokestack = new Spokestack(getApplicationContext(), this);
         try {
             // start the speech pipeline
             this.spokestack.start();
