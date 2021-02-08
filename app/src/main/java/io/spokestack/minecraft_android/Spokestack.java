@@ -3,6 +3,9 @@ package io.spokestack.minecraft_android;
 import android.content.Context;
 import android.util.Log;
 import androidx.lifecycle.Lifecycle;
+
+import org.jetbrains.annotations.NotNull;
+
 import io.spokestack.minecraft_android.handler.Cookbook;
 import io.spokestack.minecraft_android.handler.ErrorHandler;
 import io.spokestack.minecraft_android.handler.ExitHandler;
@@ -15,13 +18,13 @@ import io.spokestack.spokestack.OnSpeechEventListener;
 import io.spokestack.spokestack.SpeechContext;
 import io.spokestack.spokestack.SpeechPipeline;
 import io.spokestack.spokestack.nlu.NLUResult;
-import io.spokestack.spokestack.nlu.TraceListener;
 import io.spokestack.spokestack.nlu.tensorflow.TensorflowNLU;
 import io.spokestack.spokestack.tts.SynthesisRequest;
 import io.spokestack.spokestack.tts.TTSEvent;
 import io.spokestack.spokestack.tts.TTSListener;
 import io.spokestack.spokestack.tts.TTSManager;
 import io.spokestack.spokestack.util.EventTracer;
+import io.spokestack.spokestack.util.TraceListener;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,19 +35,16 @@ import java.util.List;
 public class Spokestack implements OnSpeechEventListener, TTSListener, TraceListener {
     private final String logTag = getClass().getSimpleName();
 
+    private final Context appContext;
+    private final VoiceUI uiDelegate;
     private SpeechPipeline speechPipeline;
     private TensorflowNLU nlu;
     private DialogManager dialogManager;
     private TTSManager tts;
-    private Context appContext;
-    private Lifecycle appLifecycle;
-    private VoiceUI uiDelegate;
 
     public Spokestack(Context applicationContext,
-                      Lifecycle lifecycle,
                       VoiceUI uiDelegate) {
         this.appContext = applicationContext;
-        this.appLifecycle = lifecycle;
         this.uiDelegate = uiDelegate;
     }
 
@@ -136,7 +136,6 @@ public class Spokestack implements OnSpeechEventListener, TTSListener, TraceList
                   )
                   .addTTSListener(this)
                   .setAndroidContext(this.appContext)
-                  .setLifecycle(appLifecycle)
                   .build();
         }
     }
@@ -144,7 +143,7 @@ public class Spokestack implements OnSpeechEventListener, TTSListener, TraceList
     // OnSpeechEventListener
 
     @Override
-    public void onEvent(SpeechContext.Event event, SpeechContext context) throws Exception {
+    public void onEvent(SpeechContext.Event event, @NotNull SpeechContext context) throws Exception {
         switch (event) {
             case ACTIVATE:
                 Log.v(logTag, "ASR activated");
@@ -190,7 +189,7 @@ public class Spokestack implements OnSpeechEventListener, TTSListener, TraceList
     // NLU TraceListener
 
     @Override
-    public void onTrace(EventTracer.Level level, String message) {
+    public void onTrace(EventTracer.Level level, @NotNull String message) {
         switch (level) {
             case DEBUG:
                 Log.d(logTag, message);
