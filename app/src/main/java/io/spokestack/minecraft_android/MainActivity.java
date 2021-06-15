@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements VoiceUI {
           int requestCode,
           @NonNull String[] permissions,
           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         int granted = PackageManager.PERMISSION_GRANTED;
         if (requestCode == audioPermCode) {
             if (grantResults.length > 0 && grantResults[0] == granted) {
